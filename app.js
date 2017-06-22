@@ -20,8 +20,8 @@ var http = require('http');
 var path = require('path');
 var ibmdb = require('ibm_db');
 require('cf-deployment-tracker-client').track();
-
-
+var queries = require('./json/queries.json');
+var cors = require('cors');
 var app = express();
 
 // all environments
@@ -51,7 +51,7 @@ if (process.env.VCAP_SERVICES) {
         hasConnect = true;
 		db2 = env['dashDB'][0].credentials;
 	}
-	
+
 }
 
 if ( hasConnect == false ) {
@@ -67,7 +67,16 @@ if ( hasConnect == false ) {
 
 var connString = "DRIVER={DB2};DATABASE=" + db2.db + ";UID=" + db2.username + ";PWD=" + db2.password + ";HOSTNAME=" + db2.hostname + ";port=" + db2.port;
 
+app.get('/', function (req, res, next) {
+  res.json({api_version: '1.0.0'});
+})
+
 app.get('/', routes.listSysTables(ibmdb,connString));
+
+app.get('/api/v1/titanic', routes.apicall(ibmdb,connString, queries.general.total));
+app.get('/api/v1/titanic/survived', routes.apicall(ibmdb,connString, queries.survived.total));
+app.get('/api/v1/titanic/survived/class', routes.apicall(ibmdb,connString, queries.survived.survived_per_class));
+app.get('/api/v1/titanic/survived/sex', routes.apicall(ibmdb,connString, queries.survived.survived_per_sex));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

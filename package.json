@@ -2,11 +2,12 @@
   "engines": {
     "node": "^4"
   },
-  "name": "dashdbnodesample",
+  "name": "api-titanic",
   "version": "0.0.1",
-  "description": "A sample node app for connecting to dashDB service on Bluemix",
+  "description": "Node app for connecting to dashDB service on Bluemix",
   "dependencies": {
     "cf-deployment-tracker-client": "^0.0.8",
+    "cors": "^2.8.3",
     "express": "^3.5.3",
     "ibm_db": "^2.0.0",
     "jade": "^1.11.0"
