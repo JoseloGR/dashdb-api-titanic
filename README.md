@@ -10,6 +10,43 @@ For issues that you encounter with this service, go to [**Get help**](https://de
 
 ![Bluemix Deployments](https://deployment-tracker.mybluemix.net/stats/6dc62259729f4ccc57f616d7f1e7315b/badge.svg)
 
+
+
+API
+===
+
+All responses (including errors) are returned in JSON format.
+
+
+`GET /`
+-------
+**API Version**
+
+###### Response
+
+`Status: 200`
+```json
+[
+  "api_version": "1.0.0",
+]
+```
+
+`GET /api/v1/titanic`
+------------------------------
+**Show status people after iceberg**
+
+`GET /api/v1/titanic/survived`
+------------------------------
+**Show total number of people who survived**
+
+`GET /api/v1/titanic/survived/class`
+------------------------------
+**Show total number of people who survived by class**
+
+`GET /api/v1/titanic/survived/sex`
+------------------------------
+**Show total number of people who survived by sex**
+
 ## Running the app on Bluemix
 
 1. If you do not already have a Bluemix account, [sign up here](https://console.ng.bluemix.net/registration/)
@@ -151,7 +188,7 @@ In the routes/index.js file, open the connection using the connection string and
 ```
 exports.listSysTables = function(ibmdb,connString) {
 	return function(req, res) {
-		   
+
 	   ibmdb.open(connString, function(err, conn) {
 			if (err ) {
 			 res.send("error occurred " + err.message);
@@ -159,14 +196,14 @@ exports.listSysTables = function(ibmdb,connString) {
 			else {
 				conn.query("SELECT FIRST_NAME, LAST_NAME, EMAIL, WORK_PHONE from GOSALESHR.employee FETCH FIRST 10 ROWS ONLY", function(err, tables, moreResultSets) {
 
-							
-				if ( !err ) { 
+
+				if ( !err ) {
 					res.render('tablelist', {
 						"tablelist" : tables
-						
+
 					 });
 
-					
+
 				} else {
 				   res.send("error occurred " + err.message);
 				}
@@ -181,7 +218,7 @@ exports.listSysTables = function(ibmdb,connString) {
 				});
 			}
 		} );
-	   
+
 	}
 }
 ```
